@@ -4,10 +4,15 @@ namespace App\Controller;
 
 use App\Entity\FoodRecord;
 use App\Form\FoodType;
+use App\Services\Diary;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Csrf\CsrfTokenManager;
 
 /**
  * @Route ("/diary")
@@ -16,9 +21,9 @@ class DiaryController extends AbstractController
 {
     /**
      * @Route ("/homepage", name="homepage")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
-    public function indexAction()
+    public function indexAction(): Response
     {
         return $this->render('diary/index.html.twig');
     }
@@ -26,16 +31,12 @@ class DiaryController extends AbstractController
     /**
      * @Route("/list", name="diary")
      */
-    public function listAction()
+    public function listAction(FoodRecordRepository $foodRecordRepository): Response
     {
-        //dump($this->getUser()); die;
-
-        $repository = $this->getDoctrine()->getRepository('AppBundle:FoodRecord');
-
         return $this->render(
             'diary/list.html.twig',
             [
-                'records' => $repository->findBy(
+                'records' => $foodRecordRepository->findBy(
                     [
                         'userId' => $this->getUser()->getId(),
                         'recordedAt' => new \Datetime()
@@ -47,8 +48,9 @@ class DiaryController extends AbstractController
 
     /**
      * @Route("/add-new-record", name="add-new-record")
+     * @throws ORMException
      */
-    public function addRecordAction(Request $request)
+    public function addRecordAction(Request $request, EntityManager $entityManager): RedirectResponse|Response
     {
         $foodRecord = new FoodRecord($this->getUser());
         $form = $this->createForm(FoodType::class, $foodRecord);
@@ -56,9 +58,8 @@ class DiaryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($foodRecord);
-            $em->flush();
+            $entityManager->persist($foodRecord);
+            $entityManager->flush();
 
             $this->addFlash('success', 'Une nouvelle entrée dans votre journal a bien été ajoutée.');
 
@@ -71,9 +72,9 @@ class DiaryController extends AbstractController
     /**
      * @Route("/record", name="delete-record")
      */
-    public function deleteRecordAction(Request $request)
+    public function deleteRecordAction(Request $request, FoodRecordRepository $foodRecordRepository, CsrfTokenManager $tokenManager, EntityManager $entityManager): RedirectResponse
     {
-        if (!$record = $this->getDoctrine()->getRepository('AppBundle:FoodRecord')->findOneById($request->request->get('record_id'))) {
+        if (!$record = $foodRecordRepository->findOneById($request->request->get('record_id'))) {
             $this->addFlash('danger', "L'entrée du journal n'existe pas.");
 
             return $this->redirectToRoute('diary');
@@ -81,10 +82,9 @@ class DiaryController extends AbstractController
 
         $csrf_token = new CsrfToken('delete_record', $request->request->get('_csrf_token'));
 
-        if ($this->get('security.csrf.token_manager')->isTokenValid($csrf_token)) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($record);
-            $em->flush();
+        if ($tokenManager->isTokenValid($csrf_token)) {
+            $entityManager->remove($record);
+            $entityManager->flush();
 
             $this->addFlash('success', "L'entrée a bien été supprimée du journal.");
         } else {
@@ -94,11 +94,11 @@ class DiaryController extends AbstractController
         return $this->redirectToRoute('diary');
     }
 
-    public function caloriesStatusAction()
+    public function caloriesStatusAction(Diary $diary): Response
     {
         return $this->render(
             'diary/caloriesStatus.html.twig',
-            ['remainingCalories' => $this->get('daily_calories')->getDailyRemainingCalories($this->getUser(), new \Datetime())]
+            ['remainingCalories' => $diary->getDailyRemainingCalories($this->getUser(), new \Datetime())]
         );
     }
 }

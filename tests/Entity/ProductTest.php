@@ -33,7 +33,7 @@ class ProductTest extends TestCase
         $product->computeTVA();
     }
 
-    public function pricesForFoodProduct()
+    public function pricesForFoodProduct(): array
     {
         return [
             [0, 0.0],

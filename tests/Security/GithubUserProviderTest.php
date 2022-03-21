@@ -4,15 +4,15 @@ namespace App\Tests\Security;
 
 use App\Entity\User;
 use App\Security\GithubUserProvider;
-use DG\BypassFinals;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\MockObject\MockObject;
 
 class GithubUserProviderTest extends TestCase
 {
-    private $client;
-    private $serializer;
-    private $streamedResponse;
-    private $response;
+    private MockObject $client;
+    private MockObject $serializer;
+    private MockObject $streamedResponse;
+    private MockObject $response;
 
     public function setUp() : void
     {

@@ -4,10 +4,11 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass=FoodRecordRepository::class)
  * @ORM\Table
  */
 class FoodRecord
@@ -42,7 +43,7 @@ class FoodRecord
      */
     private $userId;
 
-    public function __construct(User $user)
+    public function __construct(UserInterface $user)
     {
         $this->recordedAt = new \DateTime();
         $this->userId = $user->getId();
@@ -53,7 +54,7 @@ class FoodRecord
         return $this->id;
     }
 
-    public function getRecordedAt()
+    public function getRecordedAt(): \DateTimeInterface
     {
         return $this->recordedAt;
     }

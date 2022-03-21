@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
+use JetBrains\PhpStorm\Pure;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -20,33 +21,34 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column
      */
-    private $username;
+    private string $username;
 
     /**
      * @ORM\Column
      */
-    private $fullname;
+    private string $fullname;
 
     /**
      * @ORM\Column
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column
      */
-    private $avatarUrl;
+    private string $avatarUrl;
 
     /**
      * @ORM\Column
      */
-    private $profileHtmlUrl;
+    private string $profileHtmlUrl;
 
+    #[Pure]
     public function __construct($username, $fullname, $email, $avatarUrl, $profileHtmlUrl)
     {
         $this->username = $username;
@@ -57,55 +59,70 @@ class User implements UserInterface
         $this->foodRecords = new ArrayCollection();
     }
 
-    public function getId()
+    /**
+     * @return mixed
+     */
+    public function getId(): mixed
     {
         return $this->id;
     }
 
-    public function getUsername()
+    /**
+     * @return mixed
+     */
+    public function getUsername(): mixed
     {
         return $this->username;
     }
 
-    public function getFullname()
+    /**
+     * @return mixed
+     */
+    public function getFullname(): mixed
     {
         return $this->fullname;
     }
 
-    public function getEmail()
+    /**
+     * @return mixed
+     */
+    public function getEmail(): mixed
     {
         return $this->email;
     }
 
-    public function getAvatarUrl()
+    /**
+     * @return mixed
+     */
+    public function getAvatarUrl(): mixed
     {
         return $this->avatarUrl;
     }
 
-    public function getProfileHtmlUrl()
+    /**
+     * @return mixed
+     */
+    public function getProfileHtmlUrl(): mixed
     {
         return $this->profileHtmlUrl;
     }
 
-    public function getRoles() : array
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
     {
         return ['ROLE_USER'];
     }
 
-    public function getPassword()
-    {
-    }
-
-    public function getSalt()
-    {
-    }
-
     public function eraseCredentials()
     {
+        // TODO: Implement eraseCredentials() method.
     }
 
     public function getUserIdentifier(): string
     {
-        // TODO: Implement getUserIdentifier() method.
+        return '';
     }
 }

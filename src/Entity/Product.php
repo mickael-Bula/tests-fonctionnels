@@ -2,15 +2,41 @@
 
 namespace App\Entity;
 
+use JMS\Serializer\Exception\LogicException;
+
 class Product
 {
     const FOOD_PRODUCT = 'food';
 
-    private $name;
+    private string $name;
 
-    private $type;
+    private string $type;
 
-    private $price;
+    private int $price;
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
 
     public function __construct($name, $type, $price)
     {
@@ -19,10 +45,10 @@ class Product
         $this->price = $price;
     }
 
-    public function computeTVA()
+    public function computeTVA(): float | LogicException
     {
         if ($this->price < 0) {
-            throw new \LogicException('The TVA cannot be negative.');
+            throw new LogicException('The TVA cannot be negative.');
         }
 
         if (self::FOOD_PRODUCT == $this->type) {

@@ -8,18 +8,17 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
-use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class GithubAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
+class GithubAuthenticator implements AuthenticationFailureHandlerInterface
 {
-    private $client;
-    private $clientId;
-    private $clientSecret;
-    private $router;
+    private Client $client;
+    private int $clientId;
+    private string $clientSecret;
+    private Router $router;
 
     public function __construct(Client $client, $clientId, $clientSecret, Router $router)
     {
@@ -30,7 +29,7 @@ class GithubAuthenticator implements SimplePreAuthenticatorInterface, Authentica
     }
 
 
-    public function createToken(Request $request, $providerKey)
+    public function createToken(Request $request, $providerKey): PreAuthenticatedToken
     {
         $code = $request->query->get('code');
 
@@ -55,7 +54,7 @@ class GithubAuthenticator implements SimplePreAuthenticatorInterface, Authentica
         );
     }
 
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
+    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey): PreAuthenticatedToken
     {
         $accessToken = $token->getCredentials();
 
@@ -68,12 +67,12 @@ class GithubAuthenticator implements SimplePreAuthenticatorInterface, Authentica
         );
     }
 
-    public function supportsToken(TokenInterface $token, $providerKey)
+    public function supportsToken(TokenInterface $token, $providerKey): bool
     {
         return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
     }
 
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception) : Response
     {
         return new Response("Authentication Failed :(", 403);
     }
