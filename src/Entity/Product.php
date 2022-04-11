@@ -8,36 +8,6 @@ class Product
 {
     const FOOD_PRODUCT = 'food';
 
-    private string $name;
-
-    private string $type;
-
-    private int $price;
-
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return int
-     */
-    public function getPrice(): int
-    {
-        return $this->price;
-    }
-
     public function __construct($name, $type, $price)
     {
         $this->name = $name;

@@ -13,6 +13,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Csrf\CsrfTokenManager;
+use Symfony\Component\Routing\Annotation\Route;
+use App\Repository\FoodRecordRepository;
 
 /**
  * @Route ("/diary")

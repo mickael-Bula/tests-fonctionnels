@@ -4,6 +4,8 @@ namespace App\Security;
 
 use App\Entity\User;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
+use JetBrains\PhpStorm\Pure;
 use JMS\Serializer\Exception\LogicException;
 use JMS\Serializer\Serializer;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -21,7 +23,10 @@ class GithubUserProvider implements UserProviderInterface
         $this->serializer = $serializer;
     }
 
-    public function loadUserByUsername($username): User
+    /**
+     * @throws GuzzleException
+     */
+    public function loadUserByUsername(string $username): User
     {
         $response = $this->client->get('https://api.github.com/user?access_token='.$username);
         $result = $response->getBody()->getContents();
@@ -55,6 +60,7 @@ class GithubUserProvider implements UserProviderInterface
         return 'App\Entity\User' === $class;
     }
 
+    #[Pure]
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
         return new User();
