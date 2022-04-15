@@ -1,3 +1,4 @@
 - Avoir installé php 8 avec ses dépendances
 - Installer composer
 - Lancer un composer install après avoir récupéré le projet
+- Installer driver sqlite3 ubuntu ```sudo apt install php8.0-sqlite3 ```
