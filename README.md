@@ -1,3 +1,3 @@
-- Avoir installé php 8 avec toutes ses dépendances (je vais les lister)
+- Avoir installé php 8 avec ses dépendances
 - Installer composer
 - Lancer un composer install après avoir récupéré le projet
