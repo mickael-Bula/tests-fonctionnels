@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'log.in.page' | trans }}{% endblock %}
+
+{% block body %}
+    <div class="d-flex align-items-center justify-content-center card">
+        <div class="card-body">
+            <h5 class="card-title text-center">{{ 'sign.in' | trans }}</h5>
+            <form action="{{ path('app_login') }}" class="m-auto" method="post">
+                {% if error %}
+                    <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                {% endif %}
+
+                {% if app.user %}
+                    <div class="mb-3">
+                        {{ 'log.in.as' | trans }} {{ app.user.username }}, <a
+                                href="{{ path('app_logout') }}">{{ 'log.out' | trans }}</a>
+                    </div>
+                {% else %}
+                    <p>
+                        <a class="btn btn-info btn-lg"
+                           href="{{ path('github_connect') }}"> {{ 'log.in.github' | trans }}</a>
+                    </p>
+                {% endif %}
+            </form>
+        </div>
+    </div>
+{% endblock %}

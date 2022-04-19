@@ -1,0 +1,42 @@
+log:
+  in:
+    page: 'Page de login'
+    as: 'Vous êtes connectés en tant que'
+    github: 'Se connecter avec Github'
+    accessDiary: 'Vous devez vous connecter pour pouvoir accéder à votre journal'
+  out: 'Se déconnecter'
+sign:
+  in: 'Identifiez-vous'
+add:
+  meal: 'Ajouter un repas'
+save: 'Enregistrer'
+daily:
+  calorie:
+    quota:
+      exceeded: 'Vous avez dépassé le quota quotidien conseillé de calories'
+      recommend: 'Vous avez consommé le quota quotidien conseillé de calories'
+      notReachYet: 'Votre quota n''est pas encore atteint'
+      status: 'Vous en êtes à'
+    toConsume: 'à consommer aujourd''hui'
+'You have {{ calories }} to eat yet': 'Il vous reste {{ calories }} calories à consommer aujourd''hui'
+calories: 'calories'
+rest : 'Il vous reste'
+welcome: 'Bienvenue sur'
+date:
+  add: 'Ajouté le'
+eaten:
+  all: 'Tout ce qui a été mangé'
+  entry: 'Consommé'
+delete: 'Supprimer'
+report:
+  all: 'Tous les rapports'
+  add: 'Ajouter un nouveau rapport'
+  seeAll: 'Voir tous les rapports'
+logEntry:
+  add: 'Ajouter une nouvelle entrée'
+  added: 'Une nouvelle entrée dans votre journal a bien été ajoutée'
+  deleted: 'L''entrée a bien été supprimée du journal'
+  notExist: 'L''entrée du journal n''existe pas'
+  empty: 'Aucune entrée dans le journal pour l''instant'
+error:
+  occured: 'Une erreur est survenue'

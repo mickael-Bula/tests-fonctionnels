@@ -1,0 +1,23 @@
+{% if app.user %}
+    {% if remainingCalories < 0 %}
+        <div class="alert alert-danger" role="alert">
+            {{ 'daily.calorie.quota.exceeded' | trans }} -
+            {{ 'daily.calorie.quota.status' | trans }} <strong>{{ - remainingCalories + maxCalories }} {{ 'calories' | trans }}</strong>.
+        </div>
+
+    {% elseif remainingCalories == 0 %}
+
+        <div class="alert alert-warning" role="alert">
+            {{ 'daily.calorie.quota.recommend' | trans }}. ({{ maxCalories }} {{ 'calories' | trans }})
+        </div>
+
+    {% elseif remainingCalories is null %}
+
+    {% else %}
+
+        <div class="alert alert-success" role="alert">
+            {{ 'daily.calorie.quota.notReachYet' | trans }}.
+            {{ 'rest' | trans }} {{ remainingCalories }} {{ 'calories' | trans }} {{ 'daily.calorie.toConsume' | trans}}.
+        </div>
+    {% endif %}
+{% endif %}
