@@ -47,11 +47,12 @@ La BDD sqlite est crééé lors du lancement des commandes proposées au début 
 
 ## Troubleshooting
 
+### Problème de certificat à la première connexion
 Ceci est un commentaire de ma propre expérience de connexion lors de l'installation de l'appli.
 Après avoir suivi les instructions d'authentification OAuth, j'ai rencontré un problème de certificat.
 L'erreur signalée était : ![img.png](img.png)
 
-Pour résoudre le problème, j'ai dû installé le certificat demandé, que j'ai téléchargé à l'adresse http://curl.haxx.se/ca/cacert.pem
+Pour résoudre le problème, j'ai dû installer le certificat demandé, que j'ai téléchargé à l'adresse http://curl.haxx.se/ca/cacert.pem
 
 Après enregistrement du fichier sur mon poste et récupération de son path, j'ai fourni l'information dans le fichier php.ini, sous la clé `curl.cainfo` de la version de php utilisée pour lancer l'application courante (donc ici la version php 8.0.13) :
 
@@ -61,6 +62,23 @@ curl.cainfo = C:\Users\bulam\OneDrive\Documents\cacert.pem
 
 Après avoir relancé le serveur symfony, j'ai pû me connecter à l'application et être authentifié auprès de l'api de Github.
 
+### Problème de vérification du message affiché après soumission du formulaire sur la page add-new-record
+
+Le message affiché dans le code original n'était pas le bon. J'ai donc fait la modification suivante l.68 de DiaryController :
+
+```php
+$this->addFlash('success', $translator->trans('logEntry.added').'.');
+```
+
+L'information de modification est disponible dans le fichier `message+intl-icu.yaml`, sous l'entrée logEntry.
+Le message original référençait `logEntry.add`.
+
+### Problème `$client->followRedirect()`
+
+Le tutoriel conseille de placer `$client->followRedirects()` juste après l'instanciation du `$client` pour ne pas avoir à ajouter la déclaration à chaque requête entraînant une redirection.
+Cela fonctionne, mais il faut bien veiller à appeler la méthode `followRedirects()` au pluriel, `followRedirect()` existant pour les requêtes individuelles.
+(https://symfony.com/doc/current/testing.html#making-requests)
+
 ## Lancement des tests
 
 Pour rediriger la sortie standard vers un fichier du répertoire public :
@@ -68,4 +86,9 @@ Pour rediriger la sortie standard vers un fichier du répertoire public :
 ```bash
 symfony php vendor/bin/phpunit --filter=testHomepageIsUp > public/resultTest.html
 ```
+
+## Procédure des tests
+
+Les tests étant réalisés en isolation, il faut veiller à ce que le client, ainsi que tout ce qui est nécessaire pour procéder à la requête, soit défini.
+Pour éviter la répétition du code, une bonne pratique est de déclarer ces éléments dans la méthode setup.
 

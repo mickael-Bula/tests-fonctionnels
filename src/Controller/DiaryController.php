@@ -65,7 +65,7 @@ class DiaryController extends AbstractController
             $entityManager->persist($foodRecord);
             $entityManager->flush();
 
-            $this->addFlash('success', $translator->trans('logEntry.add').'.');
+            $this->addFlash('success', $translator->trans('logEntry.added').'.');
 
             return $this->redirectToRoute('add-new-record');
         }
