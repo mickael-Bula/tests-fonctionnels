@@ -25,7 +25,7 @@ Installation d'une application dans github:
 3. Remplir le formulaire
    - Application name: food-diary
    - Homepage URL: http://127.0.0.1:8000/
-   - Application description: Laisser vide ou y indiquer ce qui vous plaira ;)
+   - Application description : Laisser vide ou y indiquer ce qui vous plaira ;)
    - Authorization callback URL: http://127.0.0.1:8000/auth
 4. Clic sur le bouton Register application
 5. Nous sommes redirigés vers la page de cette application dans gitHub ou nous pouvons récupérer
@@ -36,14 +36,14 @@ qu'il faudra générer en cliquant sur le bouton **Generate a new client secret*
    - GITHUB_SECRET=dcdcc25c1220c661d0fc8c901d0a569050b14858
 7. Avec tout cela vous pouvez vous connecter à l'application
 
-## installation et connexion à la BDD sqlite
+## Installation et connexion à la BDD SQLite
 
 Sur un appareil Windows, j'ai téléchargé le fichier `sqlite-tools-win32-x86-3410200.zip` sur la page SQLite : https://www.sqlite.org/download.html.
 Il m'a ensuite suffi de dézipper le contenu du fichier dans un répertoire dédié sous C:\sqlite (cf. https://www.sqlitetutorial.net/download-install-sqlite/).
 
->NOTE : Pour lancer le moteur sqlite, il faut naviguer jusqu'au répertoire contenant les fichiers, puis de lancer la commande `sqlite3` dans un terminal.
+>NOTE : Pour lancer le moteur SQLite, il faut naviguer jusqu'au répertoire contenant les fichiers, puis de lancer la commande `sqlite3` dans un terminal.
 
-La BDD sqlite est crééé lors du lancement des commandes proposées au début de ce README.md. Elles installent une base dans le projet sous `./var/data.db`.
+La BDD SQLite est créée lors du lancement des commandes proposées au début de ce README.md. Elles installent une base dans le projet sous `./var/data.db`.
 
 ## Troubleshooting
 
@@ -92,3 +92,15 @@ symfony php vendor/bin/phpunit --filter=testHomepageIsUp > public/resultTest.htm
 Les tests étant réalisés en isolation, il faut veiller à ce que le client, ainsi que tout ce qui est nécessaire pour procéder à la requête, soit défini.
 Pour éviter la répétition du code, une bonne pratique est de déclarer ces éléments dans la méthode setup.
 
+## Création de mon propre repository Github à partir du tutoriel
+
+Pour conserver l'historique des modifications apportées, j'utilise la procédure récupérée dans un autre tutoriel [Openclassrooms](https://openclassrooms.com/fr/courses/4087056-testez-unitairement-votre-application-php-symfony/7828729-mettez-en-place-travis) :
+Il faut commencer par réinitialiser les liens vers le repository original, pour ensuite les renvoyer vers le repository personnel créé pour l'occasion :
+
+```bash
+$ git init  # réinitialisation du repo local original afin d'y faire des modifications
+$ git remote rm origin  # suppression du lien vers le dépôt git distant original
+$ git remote add origin git@github.com:mickael-Bula/tests-fonctionnels.git  # ajout du dépôt nouvellement créé pour l'occasion
+$ git branch -M main  # je m'assure que la branche maîtresse se nomme main
+$ git push -u origin main # je pousse mes modification sur le repo perso
+```
