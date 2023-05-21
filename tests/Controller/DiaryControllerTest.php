@@ -113,4 +113,19 @@ class DiaryControllerTest extends WebTestCase
 
         $this->assertSelectorTextContains('div.alert.alert-success','Une nouvelle entrée dans votre journal a bien été ajoutée');
     }
+
+    /**
+     * Vérifie que le contenu du titre h1 de la page 'diary' après un clic sur un lien de la homepage
+     *
+     * @return void
+     */
+    public function testList(): void
+    {
+        $crawler = $this->client->request(Request::METHOD_GET, $this->router->generate('diary'));
+        $link = $crawler->selectLink('Voir tous les rapports')->link();
+        $crawler = $this->client->click($link);
+        $title = $crawler->filter('H1')->text();
+
+        $this->assertSame('Tous les rapports Tout ce qui a été mangé !', $title);
+    }
 }
